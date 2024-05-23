@@ -1,12 +1,16 @@
 const canvas = document.getElementById('pongCanvas');
 const context = canvas.getContext('2d');
 
-// Game Variables
+const gameSettings = {
+    isSinglePlayer: false,
+    difficulty: 'normal'
+};
+
 let ballSpeed = 5;
 const ball = {
     x: canvas.width / 2,
     y: canvas.height / 2,
-    radius: 10,
+    radius: 20,
     speed: ballSpeed,
     velocityX: 5,
     velocityY: 5,
@@ -14,18 +18,18 @@ const ball = {
 };
 
 const player1 = {
-    x: 0,
+    x: 50,
     y: canvas.height / 2 - 50,
-    width: 10,
+    width: 20,
     height: 100,
     color: 'blue',
     score: 0
 };
 
 const player2 = {
-    x: canvas.width - 10,
+    x: canvas.width - 70,
     y: canvas.height / 2 - 50,
-    width: 10,
+    width: 20,
     height: 100,
     color: 'blue',
     score: 0
@@ -89,6 +93,12 @@ function update() {
         player1.score++;
         resetBall();
     }
+
+    if (gameSettings.isSinglePlayer) {
+        // AI Movement
+        let targetY = ball.y - player2.height / 2;
+        player2.y += (targetY - player2.y) * 0.1;
+    }
 }
 
 function collision(b, p) {
@@ -112,13 +122,18 @@ function resetBall() {
     ball.velocityX = -ball.velocityX;
 }
 
-function movePaddle(evt) {
-    let rect = canvas.getBoundingClientRect();
-    player1.y = evt.clientY - rect.top - player1.height / 2;
-    player2.y = evt.clientY - rect.top - player2.height / 2;
-}
+canvas.addEventListener('touchmove', (evt) => {
+    const rect = canvas.getBoundingClientRect();
+    const touch = evt.touches[0];
+    const touchX = touch.clientX - rect.left;
+    const touchY = touch.clientY - rect.top;
 
-canvas.addEventListener('mousemove', movePaddle);
+    if (touchX < canvas.width / 2) {
+        player1.y = touchY - player1.height / 2;
+    } else {
+        player2.y = touchY - player2.height / 2;
+    }
+});
 
 function gameLoop() {
     setInterval(() => {
