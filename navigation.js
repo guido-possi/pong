@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const hardButton = document.getElementById('hard-button');
     const nightmareButton = document.getElementById('nightmare-button');
     
+    const fullScreenButton = document.getElementById('full-screen-button');
+    const exitButton = document.getElementById('exit-button');
+    
     let isSinglePlayer = false;
     let difficulty = 'normal';
     
@@ -47,6 +50,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
     
     function initializeGame() {
+        gameSettings.isSinglePlayer = isSinglePlayer;
+        gameSettings.difficulty = difficulty;
         if (isSinglePlayer) {
             console.log('Single Player mode with difficulty:', difficulty);
         } else {
@@ -54,4 +59,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
         gameLoop();
     }
+    
+    fullScreenButton.addEventListener('click', () => {
+        if (gameScreen.requestFullscreen) {
+            gameScreen.requestFullscreen();
+        } else if (gameScreen.webkitRequestFullscreen) { /* Safari */
+            gameScreen.webkitRequestFullscreen();
+        } else if (gameScreen.msRequestFullscreen) { /* IE11 */
+            gameScreen.msRequestFullscreen();
+        }
+    });
+    
+    exitButton.addEventListener('click', () => {
+        gameScreen.classList.remove('active');
+        startScreen.classList.add('active');
+        location.reload();
+    });
 });
