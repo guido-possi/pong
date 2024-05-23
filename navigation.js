@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     const onePlayerButton = document.getElementById('one-player-button');
     const twoPlayerButton = document.getElementById('two-player-button');
-    const playButton = document.getElementById('play-button');
     
     const easyButton = document.getElementById('easy-button');
     const normalButton = document.getElementById('normal-button');
@@ -26,12 +25,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     twoPlayerButton.addEventListener('click', () => {
         isSinglePlayer = false;
-        startScreen.classList.remove('active');
-        gameScreen.classList.add('active');
-        initializeGame();
-    });
-    
-    playButton.addEventListener('click', () => {
         startScreen.classList.remove('active');
         gameScreen.classList.add('active');
         initializeGame();
